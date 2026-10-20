@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Frankeo's curriculum, on-the-edge work, and latest personal projects.">
+  <title>Frankeo — Curriculum & selected work</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="toolbar">
+    <a class="brand" href="./">F<span> / </span>CURRICULUM</a>
+    <nav aria-label="Page actions">
+      <button id="edit-toggle" aria-expanded="false" aria-controls="editor" disabled>Edit CV</button>
+      <button id="print" class="primary" disabled>Export PDF <span aria-hidden="true">↗</span></button>
+    </nav>
+  </header>
+  <div class="layout">
+    <main id="curriculum" aria-label="Curriculum vitae">
+      <p id="loading" role="status">Loading curriculum…</p>
+    </main>
+    <aside id="editor" hidden aria-label="Edit your curriculum">
+      <div class="editor-heading">
+        <h2>Your workspace</h2>
+        <button id="close-editor" aria-label="Close editor">✕</button>
+      </div>
+      <p class="hint">Edits are private to this browser. Download your data to publish it or keep a backup.</p>
+      <form id="cv-form"></form>
+      <section class="storage" aria-labelledby="storage-heading">
+        <h3 id="storage-heading">Save & restore</h3>
+        <p id="local-status" role="status" aria-live="polite"></p>
+        <div class="actions">
+          <button id="download">Download CV data</button>
+          <label class="file-button">Import CV data<input id="import" type="file" accept=".json,application/json"></label>
+          <button id="reset">Use published CV</button>
+        </div>
+        <h3>Google Drive</h3>
+        <p class="hint">Connect your account to privately back up saved revisions. No password or token is stored by this site.</p>
+        <label>Google OAuth client ID
+          <input id="client-id" autocomplete="off" placeholder="Your web application client ID">
+        </label>
+        <div class="actions">
+          <button id="connect">Connect Drive</button>
+          <button id="backup" disabled>Back up now</button>
+          <button id="restore" disabled>Restore latest</button>
+          <button id="disconnect" hidden>Disconnect</button>
+        </div>
+        <p id="drive-status" role="status" aria-live="polite">Not connected. Local saving and PDF export work without Google.</p>
+      </section>
+    </aside>
+  </div>
+  <footer>Built around the work. <a href="https://github.com/Frankeo">Find me on GitHub ↗</a></footer>
+  <noscript>This page needs JavaScript to display and edit the CV. The published data is available in <a href="./cv.json">cv.json</a>.</noscript>
+</body>
+</html>

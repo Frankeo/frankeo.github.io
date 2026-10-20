@@ -1,0 +1,19 @@
+{
+  "name": "curriculum",
+  "version": "1.0.0",
+  "description": "An editable CV and project portfolio with PDF export and Google Drive backups",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "check": "node --check app.js && node --check cv.js && node --check drive.js",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Frankeo/curriculum"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
