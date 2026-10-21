@@ -16,7 +16,7 @@ export default async function HomePage() {
     fetchGitHubOrganizationProjects(config.githubOrganization),
     fetchPublicGoogleDoc(config.googleDocUrl),
   ]);
-  const { summary, skillGroups } = extractPortfolioSections(documentHtml);
+  const { summary, skillGroups, experience } = extractPortfolioSections(documentHtml);
   const name = profile.name || profile.login;
   const linkedIn = config.linkedinUrl;
 
@@ -29,6 +29,7 @@ export default async function HomePage() {
         <nav className="main-nav" aria-label="Main navigation">
           <a href="#projects">Projects</a>
           <a href="#about">About</a>
+          <a href="#experience">Career</a>
           <a className="social-shortcut" href={profile.html_url} target="_blank" rel="noreferrer">
             GitHub
           </a>
@@ -97,6 +98,47 @@ export default async function HomePage() {
               </div>
             ))}
           </div>
+        </section>
+
+        <section className="experience-section" id="experience" aria-labelledby="experience-title">
+          <div className="experience-heading">
+            <p className="section-kicker"><span>02</span> Career timeline</p>
+            <h2 id="experience-title">Places, teams &amp; things built<span className="accent-period">.</span></h2>
+            <p className="experience-intro">A few chapters from my work in engineering and platform delivery.</p>
+          </div>
+          <ol className="experience-list">
+            {experience.map((job, index) => (
+              <li className="experience-item" key={`${job.organization}-${job.role}`}>
+                <div className="timeline-side" aria-hidden="true">
+                  <span className="timeline-index">0{index + 1}</span>
+                  <span className="timeline-node" />
+                </div>
+                <article className="timeline-entry">
+                  <div className="timeline-title-row">
+                    <div>
+                      <p className="timeline-company">{job.organization}</p>
+                      <h3>{job.role}</h3>
+                    </div>
+                    {job.period && <time>{job.period}</time>}
+                  </div>
+                  {job.highlights.length > 0 && (
+                    <ul className="timeline-highlights">
+                      {job.highlights.map((highlight, highlightIndex) => {
+                        const separator = highlight.indexOf(":");
+                        return (
+                          <li key={`${highlightIndex}-${highlight}`}>
+                            {separator > 0 && separator < 42 ? (
+                              <><strong>{highlight.slice(0, separator)}:</strong>{highlight.slice(separator + 1)}</>
+                            ) : highlight}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </article>
+              </li>
+            ))}
+          </ol>
         </section>
 
         <GitHubProjects groups={[

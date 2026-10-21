@@ -48,6 +48,15 @@ test("CV summary and technical skills are extracted by their document headings",
     <p>Cloud &amp; DevOps: AWS · Terraform · Kubernetes</p>
     <p>Development: React, TypeScript, .NET</p>
     <h1>PROFESSIONAL EXPERIENCE</h1>
+    <h2>DevOps Engineer | Align Technology</h2>
+    <p>October 2022 – Present</p>
+    <p>Infrastructure &amp; CI/CD: AWS, Terraform and Kubernetes.</p>
+    <p>Built reliable delivery pipelines.</p>
+    <h1>PROFESSIONAL EXPERIENCE · CONTINUED</h1>
+    <h2>.NET Developer | NEORIS / Dreyfus</h2>
+    <p>2015 – February 2016</p>
+    <p>Technologies: .NET Framework, Oracle and PL/SQL.</p>
+    <h1>EDUCATION</h1>
     <p>This stays in the printable CV.</p>
   `);
 
@@ -57,6 +66,17 @@ test("CV summary and technical skills are extracted by their document headings",
       { category: "Cloud & DevOps", skills: ["AWS", "Terraform", "Kubernetes"] },
       { category: "Development", skills: ["React", "TypeScript", ".NET"] },
     ],
+    experience: [{
+      role: "DevOps Engineer",
+      organization: "Align Technology",
+      period: "October 2022 – Present",
+      highlights: ["Infrastructure & CI/CD: AWS, Terraform and Kubernetes.", "Built reliable delivery pipelines."],
+    }, {
+      role: ".NET Developer",
+      organization: "NEORIS / Dreyfus",
+      period: "2015 – February 2016",
+      highlights: ["Technologies: .NET Framework, Oracle and PL/SQL."],
+    }],
   });
 });
 

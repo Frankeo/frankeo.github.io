@@ -9,6 +9,14 @@ export interface SkillGroup {
 export interface PortfolioSections {
   summary: string[];
   skillGroups: SkillGroup[];
+  experience: ExperienceItem[];
+}
+
+export interface ExperienceItem {
+  role: string;
+  organization: string;
+  period: string;
+  highlights: string[];
 }
 
 export function getGoogleDocId(documentUrl: string): string {
@@ -55,7 +63,9 @@ export function extractPortfolioSections(html: string): PortfolioSections {
   const $ = load(html);
   const summary: string[] = [];
   const skillGroups: SkillGroup[] = [];
-  let activeSection: "summary" | "skills" | null = null;
+  const experience: ExperienceItem[] = [];
+  let activeSection: "summary" | "skills" | "experience" | null = null;
+  let currentJob: ExperienceItem | null = null;
 
   $("body").children().each((_, element) => {
     const node = $(element);
@@ -64,11 +74,20 @@ export function extractPortfolioSections(html: string): PortfolioSections {
 
     if (node.is("h1, h2, h3, h4")) {
       const heading = text.toUpperCase().replace(/[:：]+$/, "");
-      activeSection = heading === "PROFESSIONAL SUMMARY"
-        ? "summary"
-        : heading === "TECHNICAL SKILLS"
-          ? "skills"
-          : null;
+      if (node.is("h1")) {
+        activeSection = heading === "PROFESSIONAL SUMMARY"
+          ? "summary"
+          : heading === "TECHNICAL SKILLS"
+            ? "skills"
+            : heading.startsWith("PROFESSIONAL EXPERIENCE")
+              ? "experience"
+              : null;
+        if (activeSection !== "experience") currentJob = null;
+      } else if (activeSection === "experience") {
+        const [role, ...organization] = text.split(/\s+\|\s+/);
+        currentJob = { role: role.trim(), organization: organization.join(" | ").trim(), period: "", highlights: [] };
+        experience.push(currentJob);
+      }
       return;
     }
 
@@ -80,8 +99,12 @@ export function extractPortfolioSections(html: string): PortfolioSections {
       const value = separator > 0 ? text.slice(separator + 1) : text;
       const skills = value.split(/[·•,;|]+/).map((skill) => skill.trim()).filter(Boolean);
       if (skills.length) skillGroups.push({ category, skills });
+    } else if (activeSection === "experience" && currentJob) {
+      const isPeriod = /^(?:[A-Za-z]+\s+)?\d{4}\s*[–—-]\s*(?:present|(?:[A-Za-z]+\s+)?\d{4})$/i.test(text);
+      if (isPeriod && !currentJob.period) currentJob.period = text;
+      else currentJob.highlights.push(text);
     }
   });
 
-  return { summary, skillGroups };
+  return { summary, skillGroups, experience };
 }

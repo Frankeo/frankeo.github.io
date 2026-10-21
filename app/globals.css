@@ -62,6 +62,28 @@ button:focus-visible, a:focus-visible { outline: 3px solid #536f2e; outline-offs
 .skill-group h3 { margin: 0 0 11px; font: 600 12px/1.4 var(--font-body), sans-serif; }
 .skill-chips { display: flex; flex-wrap: wrap; gap: 7px; margin: 0; padding: 0; list-style: none; }
 .skill-chips li { padding: 4px 9px; border: 1px solid #d6dbd0; border-radius: 3px; background: var(--surface); color: #4c5a52; font-size: 10px; line-height: 1.4; }
+.experience-section { padding: 91px max(32px, calc((100% - 1280px) / 2)) 105px; background: var(--surface); }
+.experience-heading { max-width: 900px; margin: auto; }
+.experience-heading .section-kicker span { color: #6e8c34; }
+.experience-heading h2 { max-width: 650px; margin: 18px 0 9px; font: 500 46px/1.08 var(--font-display), sans-serif; }
+.experience-intro { margin: 0; color: var(--muted); font-size: 13px; }
+.experience-list { max-width: 900px; margin: 48px auto 0; padding: 0; list-style: none; }
+.experience-item { position: relative; display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 24px; padding-bottom: 38px; }
+.experience-item:last-child { padding-bottom: 0; }
+.experience-item:not(:last-child)::before { position: absolute; top: 28px; bottom: 0; left: 13px; width: 1px; background: #cbd2c6; content: ""; }
+.timeline-side { position: relative; display: flex; flex-direction: column; align-items: center; gap: 13px; }
+.timeline-index { color: var(--coral); font-size: 10px; font-weight: 700; }
+.timeline-node { z-index: 1; width: 9px; height: 9px; border: 2px solid #6e8c34; border-radius: 50%; background: var(--surface); }
+.timeline-entry { padding: 0 0 25px; border-bottom: 1px solid var(--line); }
+.experience-item:last-child .timeline-entry { border-bottom: 0; }
+.timeline-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+.timeline-company { margin: 0 0 4px; color: #65765a; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+.timeline-title-row h3 { margin: 0; font: 500 23px/1.25 var(--font-display), sans-serif; }
+.timeline-title-row time { flex: 0 0 auto; margin-top: 4px; color: var(--muted); font-size: 11px; }
+.timeline-highlights { display: grid; gap: 8px; margin: 15px 0 0; padding: 0; color: #596760; font-size: 12px; line-height: 1.65; list-style: none; }
+.timeline-highlights li { position: relative; padding-left: 14px; }
+.timeline-highlights li::before { position: absolute; left: 0; color: var(--coral); content: "↳"; }
+.timeline-highlights strong { margin-right: 4px; color: var(--ink); }
 .projects-section { padding: 92px max(32px, calc((100% - 1280px) / 2)) 105px; background: var(--ink); color: #f5f4ed; }
 .section-heading { max-width: 1280px; margin: auto; }
 .section-kicker { color: #9eaaa2; }
@@ -149,6 +171,14 @@ button:focus-visible, a:focus-visible { outline: 3px solid #536f2e; outline-offs
   .summary-copy { margin-top: 19px; }
   .summary-lead { font-size: 17px; }
   .skills-panel { padding: 28px 0 0; border-top: 1px solid var(--line); border-left: 0; }
+  .experience-section { padding: 64px 20px 72px; }
+  .experience-heading h2 { margin-top: 15px; font-size: 37px; }
+  .experience-list { margin-top: 34px; }
+  .experience-item { grid-template-columns: 30px minmax(0, 1fr); gap: 14px; padding-bottom: 29px; }
+  .experience-item:not(:last-child)::before { left: 10px; }
+  .timeline-title-row { flex-direction: column; gap: 6px; }
+  .timeline-title-row h3 { font-size: 20px; }
+  .timeline-title-row time { margin-top: 0; }
   .projects-section { padding: 64px 20px 70px; }
   .section-title-row { display: block; margin: 13px 0 26px; }
   .section-title-row h2 { font-size: 43px; }
@@ -171,7 +201,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid #536f2e; outline-offs
 @media print {
   body { background: white; color: #111; font-size: 10pt; }
   .topbar, .hero, .projects-section, .resume-heading, .site-footer { display: none !important; }
-  .topbar, .hero, .about-section, .projects-section, .site-footer { display: none !important; }
+  .topbar, .hero, .about-section, .experience-section, .projects-section, .site-footer { display: none !important; }
   .print-document { display: block; }
   .document { width: auto; margin: 0; font-size: 9pt; }
   .document h1 { font-size: 16pt; }
