@@ -1,7 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowUpRight, Code2, MapPin } from "lucide-react";
+import {
+  ArrowUpRight,
+  Award,
+  BriefcaseBusiness,
+  Code2,
+  FolderGit2,
+  House,
+  MapPin,
+  UserRound,
+  Wrench,
+} from "lucide-react";
 import Image from "next/image";
 import type { PortfolioSections } from "../lib/google-doc";
 import type { GitHubProfile, GitHubRepository } from "../lib/github";
@@ -93,19 +103,34 @@ export default function Portfolio({
   };
 
   const linkedIn = linkedInUrl;
+  const navigation = [
+    { href: "#top", label: copy.nav[0], icon: House },
+    { href: "#about", label: copy.nav[1], icon: UserRound },
+    { href: "#focus", label: copy.nav[2], icon: Wrench },
+    { href: "#projects", label: copy.nav[3], icon: FolderGit2 },
+    { href: "#experience", label: copy.nav[4], icon: BriefcaseBusiness },
+    { href: "#credentials", label: copy.nav[5], icon: Award },
+  ];
 
   return (
     <div className="site-shell">
       <header className="topbar">
         <a className="brand" href="#top" aria-label={`${name}, ${copy.home}`}>
-          FM<span> / </span>PORTFOLIO
+          FM<span>.</span>
         </a>
         <nav className="main-nav" aria-label={isSpanish ? "Navegación principal" : "Main navigation"}>
-          {copy.nav.map((label, index) => (
-            <a key={label} href={["#top", "#about", "#focus", "#projects", "#experience", "#credentials"][index]}>{label}</a>
+          {navigation.map(({ href, label, icon: Icon }) => (
+            <a key={href} href={href} aria-label={label} title={label}>
+              <Icon size={18} aria-hidden="true" />
+              <span className="nav-label">{label}</span>
+            </a>
           ))}
-          <a className="social-shortcut" href={profile.html_url} target="_blank" rel="noreferrer">GitHub</a>
-          <a className="social-shortcut" href={linkedIn} target="_blank" rel="noreferrer">LinkedIn</a>
+          <a className="social-shortcut" href={profile.html_url} target="_blank" rel="noreferrer" aria-label="GitHub" title="GitHub">
+            <Code2 size={18} aria-hidden="true" /><span className="nav-label">GitHub</span>
+          </a>
+          <a className="social-shortcut" href={linkedIn} target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn">
+            <BriefcaseBusiness size={18} aria-hidden="true" /><span className="nav-label">LinkedIn</span>
+          </a>
           <div className="language-switch" role="group" aria-label={copy.languageLabel}>
             <button type="button" aria-pressed={!isSpanish} onClick={() => setLanguage("en")}>EN</button>
             <button type="button" aria-pressed={isSpanish} onClick={() => setLanguage("es")}>ES</button>
