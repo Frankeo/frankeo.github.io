@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Code2, Star } from "lucide-react";
+import Image from "next/image";
 import { fetchLatestRepositories, type GitHubAccountType, type GitHubRepository } from "../lib/github";
 
 export interface GitHubProjectGroup {
@@ -14,7 +15,35 @@ export interface GitHubProjectGroup {
   initialProjects: GitHubRepository[];
 }
 
-export default function GitHubProjects({ groups }: { groups: GitHubProjectGroup[] }) {
+function ProjectArtwork({ project }: { project: GitHubRepository }) {
+  if (project.imageUrl) {
+    return (
+      <div className="project-art project-art-image">
+        <Image
+          src={project.imageUrl}
+          alt={project.imageAlt || `${project.name} repository preview`}
+          fill
+          unoptimized
+          sizes="(max-width: 680px) 90vw, 42vw"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="project-art project-art-fallback">
+      <span>{project.language || "Open source"}</span>
+      <strong>{project.name}</strong>
+      <Code2 size={38} strokeWidth={1.2} aria-hidden="true" />
+    </div>
+  );
+}
+
+export default function GitHubProjects({
+  groups,
+}: {
+  groups: GitHubProjectGroup[];
+}) {
   const [projectsByGroup, setProjectsByGroup] = useState<Record<string, GitHubRepository[]>>(
     Object.fromEntries(groups.map((group) => [group.key, group.initialProjects])),
   );
@@ -39,7 +68,7 @@ export default function GitHubProjects({ groups }: { groups: GitHubProjectGroup[
   return (
     <section className="projects-section" id="projects" aria-labelledby="projects-title">
       <div className="section-heading">
-        <p className="section-kicker"><span>04</span> Open source / <span className="live-label">GitHub live</span></p>
+        <p className="section-kicker"><span>05</span> Open source / <span className="live-label">GitHub live</span></p>
         <div className="section-title-row">
           <h2 id="projects-title">Selected work<span className="accent-period">.</span></h2>
           <p>Four public projects, ranked by current community stars.</p>
@@ -60,6 +89,7 @@ export default function GitHubProjects({ groups }: { groups: GitHubProjectGroup[
             <div className="project-grid" aria-live="polite">
               {(projectsByGroup[group.key] || []).map((project, index) => (
                 <article className="project-item" key={project.name}>
+                  <ProjectArtwork project={project} />
                   <div className="project-topline">
                     <span className="project-number">0{index + 1} / 04</span>
                     <span className="project-language"><Code2 size={15} aria-hidden="true" /> {project.language || "Open source"}</span>

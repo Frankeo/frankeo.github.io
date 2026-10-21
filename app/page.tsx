@@ -27,8 +27,10 @@ export default async function HomePage() {
           FM<span> / </span>PORTFOLIO
         </a>
         <nav className="main-nav" aria-label="Main navigation">
+          <a href="#top">Home</a>
+          <a href="#about">About me</a>
+          <a href="#focus">What I do</a>
           <a href="#projects">Projects</a>
-          <a href="#about">About</a>
           <a href="#experience">Career</a>
           <a href="#credentials">Credentials</a>
           <a className="social-shortcut" href={profile.html_url} target="_blank" rel="noreferrer">
@@ -44,10 +46,10 @@ export default async function HomePage() {
       <main id="top">
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero-copy">
-            <p className="eyebrow"><span className="status-dot" /> DevOps engineer <span>/</span> Barcelona, Spain</p>
+            <p className="eyebrow"><span className="status-dot" /> DevOps engineer <span>/</span> {profile.location || "Barcelona, Spain"}</p>
             <h1 id="hero-title">I build the systems <em>behind</em> great software.</h1>
             <p className="hero-intro">
-              {profile.bio || "Engineering reliable cloud platforms, delivery pipelines and developer experiences."}
+              {profile.bio || "Cloud infrastructure · CI/CD · technical leadership"}
             </p>
             <div className="hero-actions">
               <a className="action-link action-dark" href="#projects">Explore selected work <ArrowUpRight size={17} /></a>
@@ -55,7 +57,7 @@ export default async function HomePage() {
                 Let’s connect <ArrowUpRight size={17} />
               </a>
             </div>
-            <div className="hero-footnote"><span>01</span> PLATFORM ENGINEERING · CLOUD · CI/CD</div>
+            <div className="hero-footnote"><span>FM</span> PLATFORM ENGINEERING · CLOUD · CI/CD</div>
           </div>
 
           <figure className="portrait-frame">
@@ -70,15 +72,14 @@ export default async function HomePage() {
                 sizes="(max-width: 700px) 82vw, 38vw"
               />
             </div>
-            <figcaption><MapPin size={15} aria-hidden="true" /> Barcelona, Spain <span>·</span> Building since 2013</figcaption>
+            <figcaption><MapPin size={15} aria-hidden="true" /> {profile.location || "Barcelona, Spain"} <span>·</span> Building since 2013</figcaption>
             <span className="portrait-index" aria-hidden="true">FM</span>
           </figure>
-          <a className="scroll-cue" href="#projects">Scroll to selected work <span>↓</span></a>
         </section>
 
         <section className="about-section" id="about" aria-labelledby="about-title">
           <div className="about-copy">
-            <p className="section-kicker"><span>01</span> A little about me</p>
+            <p className="section-kicker"><span>01</span> Who I am</p>
             <h2 id="about-title">Engineering with a view beyond the code<span className="accent-period">.</span></h2>
             <div className="summary-copy">
               {summary.map((paragraph, index) => (
@@ -88,22 +89,30 @@ export default async function HomePage() {
               ))}
             </div>
           </div>
-          <div className="skills-panel">
-            <p className="section-kicker"><span>02</span> Technical toolkit</p>
-            {skillGroups.map((group) => (
-              <div className="skill-group" key={group.category}>
+        </section>
+
+        <section className="skills-band" id="focus" aria-labelledby="focus-title">
+          <div className="skills-band-heading">
+            <p className="section-kicker"><span>02</span> What I do</p>
+            <h2 id="focus-title">Turning complex systems into clear paths forward.</h2>
+            <p>Tools and practices I use to help teams build, ship and operate software.</p>
+          </div>
+          <div className="skills-band-grid">
+            {skillGroups.map((group, index) => (
+              <article className="skills-band-item" key={group.category}>
+                <span className="skills-band-number">0{index + 1}</span>
                 <h3>{group.category}</h3>
                 <ul className="skill-chips">
                   {group.skills.map((skill) => <li key={skill}>{skill}</li>)}
                 </ul>
-              </div>
+              </article>
             ))}
           </div>
         </section>
 
         <section className="experience-section" id="experience" aria-labelledby="experience-title">
           <div className="experience-heading">
-            <p className="section-kicker"><span>02</span> Career timeline</p>
+            <p className="section-kicker"><span>03</span> Career timeline</p>
             <h2 id="experience-title">Places, teams &amp; things built<span className="accent-period">.</span></h2>
             <p className="experience-intro">A few chapters from my work in engineering and platform delivery.</p>
           </div>
@@ -144,7 +153,7 @@ export default async function HomePage() {
 
         <section className="credentials-section" id="credentials" aria-labelledby="credentials-title">
           <div className="credentials-heading">
-            <p className="section-kicker"><span>03</span> Beyond the day-to-day</p>
+            <p className="section-kicker"><span>04</span> Beyond the day-to-day</p>
             <h2 id="credentials-title">Learning, recognition &amp; languages<span className="accent-period">.</span></h2>
           </div>
           <div className="credentials-grid">
@@ -211,7 +220,7 @@ export default async function HomePage() {
 
       <footer className="site-footer">
         <a className="brand" href="#top">FM<span> / </span>FRANCISCO MORENO</a>
-        <p>Reliable systems. Thoughtful engineering.</p>
+        <p>Let’s build something reliable.</p>
         <div className="footer-links">
           <a href={profile.html_url} target="_blank" rel="noreferrer"><Code2 size={17} /> GitHub</a>
           <a href={linkedIn} target="_blank" rel="noreferrer"><ArrowUpRight size={17} /> LinkedIn</a>

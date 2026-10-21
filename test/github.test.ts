@@ -23,6 +23,7 @@ const repository = (
   fork,
   archived,
   pushed_at: "2026-01-01T00:00:00Z",
+  default_branch: "main",
 });
 
 test("user projects rank by stars and omit forks and archived repositories", () => {
@@ -76,6 +77,62 @@ test("latest GitHub star counts are fetched without cache on each request", asyn
   const second = await fetchLatestGitHubProjects("Frankeo", fakeFetch);
   assert.equal(first[0].name, "old-leader");
   assert.equal(second[0].name, "changed-leader");
+});
+
+test("repository thumbnail is derived from its README and skips badges", async () => {
+  const urls: string[] = [];
+  const fakeFetch: typeof fetch = async (input) => {
+    const url = String(input);
+    urls.push(url);
+    if (url.includes("/repos?")) {
+      return Response.json([{ ...repository("with-image", 7), default_branch: "main" }]);
+    }
+    return new Response([
+      "![build](https://img.shields.io/badge/build-passing-green.svg)",
+      "![Product preview](images/product-preview.webp)",
+    ].join("\n"));
+  };
+
+  const projects = await fetchLatestRepositories("Frankeo", "user", fakeFetch);
+  assert.ok(urls.includes("https://raw.githubusercontent.com/Frankeo/with-image/main/README.md"));
+  assert.equal(projects[0].imageUrl, "https://raw.githubusercontent.com/Frankeo/with-image/main/images/product-preview.webp");
+  assert.equal(projects[0].imageAlt, "Product preview");
+});
+
+test("repository thumbnail supports HTML images without alt text", async () => {
+  const fakeFetch: typeof fetch = async (input) => {
+    const url = String(input);
+    if (url.includes("/repos?")) {
+      return Response.json([{ ...repository("html-image", 5), default_branch: "main" }]);
+    }
+    if (url.endsWith("/README.md")) {
+      return new Response('<p><img width="200" src="images/project-logo.jpeg"></p>');
+    }
+    return Response.json({ tree: [] });
+  };
+
+  const projects = await fetchLatestRepositories("Frankeo", "user", fakeFetch);
+  assert.equal(projects[0].imageUrl, "https://raw.githubusercontent.com/Frankeo/html-image/main/images/project-logo.jpeg");
+  assert.equal(projects[0].imageAlt, "html-image");
+});
+
+test("repository thumbnail falls back to a useful image from the dynamic repo tree", async () => {
+  const fakeFetch: typeof fetch = async (input) => {
+    const url = String(input);
+    if (url.includes("/repos?")) {
+      return Response.json([{ ...repository("feature-flag", 5), default_branch: "main" }]);
+    }
+    if (url.endsWith("/README.md")) return new Response("No screenshot in this README.");
+    return Response.json({
+      tree: [
+        { path: "docs/static/img/docusaurus-social-card.jpg", type: "blob", size: 50000 },
+        { path: "src/images/feature-flag168.png", type: "blob", size: 8000 },
+      ],
+    });
+  };
+
+  const projects = await fetchLatestRepositories("Frankeo", "user", fakeFetch);
+  assert.equal(projects[0].imageUrl, "https://raw.githubusercontent.com/Frankeo/feature-flag/main/src/images/feature-flag168.png");
 });
 
 test("organization projects use the public organization endpoint", async () => {

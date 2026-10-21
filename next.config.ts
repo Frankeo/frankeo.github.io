@@ -4,7 +4,10 @@ const nextConfig: NextConfig = {
   output: "export",
   images: {
     unoptimized: true,
-    remotePatterns: [{ protocol: "https", hostname: "avatars.githubusercontent.com" }],
+    remotePatterns: [
+      { protocol: "https", hostname: "avatars.githubusercontent.com" },
+      { protocol: "https", hostname: "raw.githubusercontent.com" },
+    ],
   },
 };
 
