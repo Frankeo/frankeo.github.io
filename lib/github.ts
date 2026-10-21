@@ -22,9 +22,9 @@ export interface GitHubRepository {
 
 export type GitHubAccountType = "user" | "organization";
 
-export function getTopRepositories(repositories: GitHubRepository[], count = 4) {
+export function getTopRepositories(repositories: GitHubRepository[], count = 4, includeForks = false) {
   return repositories
-    .filter((repository) => !repository.fork && !repository.archived)
+    .filter((repository) => (includeForks || !repository.fork) && !repository.archived)
     .sort((first, second) =>
       second.stargazers_count - first.stargazers_count
       || second.forks_count - first.forks_count
@@ -48,7 +48,7 @@ async function readRepositories(
   const repositories = await readGitHubJSON<GitHubRepository[]>(repositoriesUrl(owner, accountType), fetcher, cache);
   return getTopRepositories(repositories.filter((repository) =>
     accountType === "organization" || repository.name !== `${owner}.github.io`,
-  ));
+  ), 4, accountType === "organization");
 }
 
 async function readGitHubJSON<T>(url: string, fetcher: typeof fetch, cache: RequestCache = "force-cache"): Promise<T> {
