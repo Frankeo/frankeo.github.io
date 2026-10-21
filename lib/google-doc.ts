@@ -1,4 +1,15 @@
 import sanitizeHtml from "sanitize-html";
+import { load } from "cheerio";
+
+export interface SkillGroup {
+  category: string;
+  skills: string[];
+}
+
+export interface PortfolioSections {
+  summary: string[];
+  skillGroups: SkillGroup[];
+}
 
 export function getGoogleDocId(documentUrl: string): string {
   let url: URL;
@@ -38,4 +49,39 @@ export async function fetchPublicGoogleDoc(documentUrl: string, fetcher: typeof 
     allowedSchemes: ["http", "https", "mailto"],
     allowProtocolRelative: false,
   });
+}
+
+export function extractPortfolioSections(html: string): PortfolioSections {
+  const $ = load(html);
+  const summary: string[] = [];
+  const skillGroups: SkillGroup[] = [];
+  let activeSection: "summary" | "skills" | null = null;
+
+  $("body").children().each((_, element) => {
+    const node = $(element);
+    const text = node.text().replace(/\s+/g, " ").trim();
+    if (!text) return;
+
+    if (node.is("h1, h2, h3, h4")) {
+      const heading = text.toUpperCase().replace(/[:：]+$/, "");
+      activeSection = heading === "PROFESSIONAL SUMMARY"
+        ? "summary"
+        : heading === "TECHNICAL SKILLS"
+          ? "skills"
+          : null;
+      return;
+    }
+
+    if (activeSection === "summary") {
+      summary.push(text);
+    } else if (activeSection === "skills") {
+      const separator = text.indexOf(":");
+      const category = separator > 0 ? text.slice(0, separator).trim() : "Skills";
+      const value = separator > 0 ? text.slice(separator + 1) : text;
+      const skills = value.split(/[·•,;|]+/).map((skill) => skill.trim()).filter(Boolean);
+      if (skills.length) skillGroups.push({ category, skills });
+    }
+  });
+
+  return { summary, skillGroups };
 }

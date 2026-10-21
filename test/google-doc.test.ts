@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { fetchGitHubPortfolio, fetchLatestGitHubProjects, fetchLatestRepositories, getTopRepositories, type GitHubRepository } from "../lib/github";
-import { fetchPublicGoogleDoc, getGoogleDocId } from "../lib/google-doc";
+import { extractPortfolioSections, fetchPublicGoogleDoc, getGoogleDocId } from "../lib/google-doc";
 
 test("Google Docs links are validated and extracted from the config URL", () => {
   assert.equal(getGoogleDocId("https://docs.google.com/document/d/doc_123/edit?usp=sharing"), "doc_123");
@@ -37,6 +37,27 @@ test("Google Docs export errors explain the public sharing requirement", async (
     fetchPublicGoogleDoc("https://docs.google.com/document/d/doc-id/edit", fakeFetch),
     /sharing settings/,
   );
+});
+
+test("CV summary and technical skills are extracted by their document headings", () => {
+  const sections = extractPortfolioSections(`
+    <h1>PROFESSIONAL SUMMARY</h1>
+    <p>Software engineering since 2013.</p>
+    <p>Focused on cloud platforms and delivery.</p>
+    <h1>TECHNICAL SKILLS</h1>
+    <p>Cloud &amp; DevOps: AWS · Terraform · Kubernetes</p>
+    <p>Development: React, TypeScript, .NET</p>
+    <h1>PROFESSIONAL EXPERIENCE</h1>
+    <p>This stays in the printable CV.</p>
+  `);
+
+  assert.deepEqual(sections, {
+    summary: ["Software engineering since 2013.", "Focused on cloud platforms and delivery."],
+    skillGroups: [
+      { category: "Cloud & DevOps", skills: ["AWS", "Terraform", "Kubernetes"] },
+      { category: "Development", skills: ["React", "TypeScript", ".NET"] },
+    ],
+  });
 });
 
 test("GitHub projects rank public repositories by stars and omit forks and archives", () => {

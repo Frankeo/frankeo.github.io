@@ -1,3 +1,4 @@
+A personal portfolio built with Next.js and TypeScript. It turns the CV's professional summary and technical skills into an editorial About section, shows a portrait from the configured GitHub account, and highlights the four most-starred public repositories from both the personal account and company organization. The CV is read-only here; edits happen in Google Docs. The PDF action prints the complete original CV.
 # Curriculum
 
 A personal portfolio built with Next.js and TypeScript. It shows the public Google Docs CV, a portrait from the configured GitHub account, the four most-starred public repositories from both the personal account and company organization, and GitHub/LinkedIn links. The CV is read-only here; edits happen in Google Docs. The PDF action prints only the CV.

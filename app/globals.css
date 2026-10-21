@@ -49,6 +49,19 @@ button:focus-visible, a:focus-visible { outline: 3px solid #536f2e; outline-offs
 .portrait-index { position: absolute; right: -21px; top: -24px; display: grid; width: 62px; height: 62px; place-items: center; border: 1px solid var(--ink); border-radius: 50%; background: var(--lime); font: 600 15px var(--font-display), sans-serif; transform: rotate(-2deg); }
 .scroll-cue { position: absolute; bottom: 37px; left: 0; display: flex; gap: 13px; align-items: center; color: var(--muted); font-size: 11px; text-decoration: none; }
 .scroll-cue span { color: var(--coral); font-size: 18px; }
+.about-section { display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, .84fr); gap: 9%; padding: 100px max(32px, calc((100% - 1280px) / 2)) 108px; }
+.about-copy h2 { max-width: 660px; margin: 24px 0 0; font: 500 47px/1.08 var(--font-display), sans-serif; }
+.summary-copy { max-width: 630px; margin-top: 25px; }
+.summary-copy p { margin: 0 0 16px; }
+.summary-lead { font-size: 19px; line-height: 1.65; }
+.summary-detail { color: var(--muted); font-size: 14px; }
+.skills-panel { align-self: center; padding-left: 34px; border-left: 1px solid var(--line); }
+.skills-panel > .section-kicker { margin-bottom: 13px; }
+.skills-panel > .section-kicker span { color: #6e8c34; }
+.skill-group { padding: 17px 0; border-bottom: 1px solid var(--line); }
+.skill-group h3 { margin: 0 0 11px; font: 600 12px/1.4 var(--font-body), sans-serif; }
+.skill-chips { display: flex; flex-wrap: wrap; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.skill-chips li { padding: 4px 9px; border: 1px solid #d6dbd0; border-radius: 3px; background: var(--surface); color: #4c5a52; font-size: 10px; line-height: 1.4; }
 .projects-section { padding: 92px max(32px, calc((100% - 1280px) / 2)) 105px; background: var(--ink); color: #f5f4ed; }
 .section-heading { max-width: 1280px; margin: auto; }
 .section-kicker { color: #9eaaa2; }
@@ -87,7 +100,9 @@ button:focus-visible, a:focus-visible { outline: 3px solid #536f2e; outline-offs
 .resume-heading .section-kicker { margin-bottom: 14px; color: var(--muted); }
 .resume-heading .section-kicker span { color: #6e8c34; }
 .resume-heading h2 { font-size: 42px; }
+.print-document { display: none; }
 .document { width: min(100%, 1000px); margin: auto; color: var(--ink); font-size: 14px; line-height: 1.68; }
+.section-title-row h2 { margin: 0; font: 500 54px/1.08 var(--font-display), sans-serif; letter-spacing: 0; }
 .document h1, .document h2, .document h3, .document h4 { margin: 1.8em 0 .7em; line-height: 1.2; break-after: avoid; }
 .document h1 { padding-bottom: 8px; border-bottom: 1px solid var(--line); color: #58722d; font: 600 23px/1.2 var(--font-display), sans-serif; }
 .document h2 { font: 600 18px/1.3 var(--font-display), sans-serif; }
@@ -129,6 +144,11 @@ button:focus-visible, a:focus-visible { outline: 3px solid #536f2e; outline-offs
   .portrait-frame { width: min(78%, 360px); justify-self: center; margin: 0 10px 8px 0; }
   .portrait-frame figcaption { font-size: 9px; }
   .scroll-cue { bottom: 21px; }
+  .about-section { grid-template-columns: 1fr; gap: 38px; padding: 65px 20px 72px; }
+  .about-copy h2 { margin-top: 16px; font-size: 38px; }
+  .summary-copy { margin-top: 19px; }
+  .summary-lead { font-size: 17px; }
+  .skills-panel { padding: 28px 0 0; border-top: 1px solid var(--line); border-left: 0; }
   .projects-section { padding: 64px 20px 70px; }
   .section-title-row { display: block; margin: 13px 0 26px; }
   .section-title-row h2 { font-size: 43px; }
@@ -140,10 +160,6 @@ button:focus-visible, a:focus-visible { outline: 3px solid #536f2e; outline-offs
   .project-item h3 { margin-top: 18px; font-size: 22px; }
   .all-projects { margin: 24px 0 0 auto; }
   .resume-section { padding: 64px 20px 72px; }
-  .resume-heading { align-items: start; flex-direction: column; margin-bottom: 30px; }
-  .resume-heading h2 { font-size: 34px; }
-  .document { font-size: 13px; }
-  .document h1 { font-size: 20px; }
   .site-footer { width: calc(100% - 40px); padding: 24px 0; align-items: flex-start; flex-wrap: wrap; }
   .site-footer p { order: 3; flex-basis: 100%; }
   .footer-links { gap: 14px; }
@@ -155,7 +171,8 @@ button:focus-visible, a:focus-visible { outline: 3px solid #536f2e; outline-offs
 @media print {
   body { background: white; color: #111; font-size: 10pt; }
   .topbar, .hero, .projects-section, .resume-heading, .site-footer { display: none !important; }
-  .resume-section { padding: 0; background: white; }
+  .topbar, .hero, .about-section, .projects-section, .site-footer { display: none !important; }
+  .print-document { display: block; }
   .document { width: auto; margin: 0; font-size: 9pt; }
   .document h1 { font-size: 16pt; }
   .document h2 { font-size: 12pt; }

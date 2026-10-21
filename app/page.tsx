@@ -1,6 +1,6 @@
 import config from "../document-config.json";
 import { fetchGitHubOrganizationProjects, fetchGitHubPortfolio } from "../lib/github";
-import { fetchPublicGoogleDoc } from "../lib/google-doc";
+import { extractPortfolioSections, fetchPublicGoogleDoc } from "../lib/google-doc";
 import { ArrowUpRight, Code2, MapPin } from "lucide-react";
 import Image from "next/image";
 import GitHubProjects from "./GitHubProjects";
@@ -16,6 +16,7 @@ export default async function HomePage() {
     fetchGitHubOrganizationProjects(config.githubOrganization),
     fetchPublicGoogleDoc(config.googleDocUrl),
   ]);
+  const { summary, skillGroups } = extractPortfolioSections(documentHtml);
   const name = profile.name || profile.login;
   const linkedIn = config.linkedinUrl;
 
@@ -27,7 +28,7 @@ export default async function HomePage() {
         </a>
         <nav className="main-nav" aria-label="Main navigation">
           <a href="#projects">Projects</a>
-          <a href="#resume">CV</a>
+          <a href="#about">About</a>
           <a className="social-shortcut" href={profile.html_url} target="_blank" rel="noreferrer">
             GitHub
           </a>
@@ -73,6 +74,31 @@ export default async function HomePage() {
           <a className="scroll-cue" href="#projects">Scroll to selected work <span>↓</span></a>
         </section>
 
+        <section className="about-section" id="about" aria-labelledby="about-title">
+          <div className="about-copy">
+            <p className="section-kicker"><span>01</span> A little about me</p>
+            <h2 id="about-title">Engineering with a view beyond the code<span className="accent-period">.</span></h2>
+            <div className="summary-copy">
+              {summary.map((paragraph, index) => (
+                <p className={index === 0 ? "summary-lead" : "summary-detail"} key={`${index}-${paragraph}`}>
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </div>
+          <div className="skills-panel">
+            <p className="section-kicker"><span>02</span> Technical toolkit</p>
+            {skillGroups.map((group) => (
+              <div className="skill-group" key={group.category}>
+                <h3>{group.category}</h3>
+                <ul className="skill-chips">
+                  {group.skills.map((skill) => <li key={skill}>{skill}</li>)}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <GitHubProjects groups={[
           {
             key: "personal",
@@ -94,14 +120,7 @@ export default async function HomePage() {
           },
         ]} />
 
-        <section className="resume-section" id="resume" aria-labelledby="resume-title">
-          <div className="resume-heading">
-            <div>
-              <p className="section-kicker"><span>02</span> Background</p>
-              <h2 id="resume-title">Experience &amp; approach</h2>
-            </div>
-            <PdfButton label="Download CV as PDF" />
-          </div>
+        <section className="print-document" aria-hidden="true">
           <div className="document" dangerouslySetInnerHTML={{ __html: documentHtml }} />
         </section>
       </main>
