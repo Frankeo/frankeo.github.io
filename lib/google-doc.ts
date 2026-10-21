@@ -10,6 +10,9 @@ export interface PortfolioSections {
   summary: string[];
   skillGroups: SkillGroup[];
   experience: ExperienceItem[];
+  education: EducationItem[];
+  certifications: CertificationGroup[];
+  languages: LanguageItem[];
 }
 
 export interface ExperienceItem {
@@ -17,6 +20,22 @@ export interface ExperienceItem {
   organization: string;
   period: string;
   highlights: string[];
+}
+
+export interface EducationItem {
+  qualification: string;
+  institution: string;
+  period: string;
+}
+
+export interface CertificationGroup {
+  provider: string;
+  items: string[];
+}
+
+export interface LanguageItem {
+  language: string;
+  proficiency: string;
 }
 
 export function getGoogleDocId(documentUrl: string): string {
@@ -64,8 +83,12 @@ export function extractPortfolioSections(html: string): PortfolioSections {
   const summary: string[] = [];
   const skillGroups: SkillGroup[] = [];
   const experience: ExperienceItem[] = [];
-  let activeSection: "summary" | "skills" | "experience" | null = null;
+  const education: EducationItem[] = [];
+  const certifications: CertificationGroup[] = [];
+  const languages: LanguageItem[] = [];
+  let activeSection: "summary" | "skills" | "experience" | "education" | "certifications" | "languages" | null = null;
   let currentJob: ExperienceItem | null = null;
+  let currentEducation: EducationItem | null = null;
 
   $("body").children().each((_, element) => {
     const node = $(element);
@@ -81,12 +104,22 @@ export function extractPortfolioSections(html: string): PortfolioSections {
             ? "skills"
             : heading.startsWith("PROFESSIONAL EXPERIENCE")
               ? "experience"
+              : heading === "EDUCATION"
+                ? "education"
+                : heading === "CERTIFICATIONS & ADDITIONAL TRAINING"
+                  ? "certifications"
+                  : heading === "LANGUAGES"
+                    ? "languages"
               : null;
         if (activeSection !== "experience") currentJob = null;
+          if (activeSection !== "education") currentEducation = null;
       } else if (activeSection === "experience") {
         const [role, ...organization] = text.split(/\s+\|\s+/);
         currentJob = { role: role.trim(), organization: organization.join(" | ").trim(), period: "", highlights: [] };
         experience.push(currentJob);
+        } else if (activeSection === "education") {
+          currentEducation = { qualification: text, institution: "", period: "" };
+          education.push(currentEducation);
       }
       return;
     }
@@ -103,8 +136,26 @@ export function extractPortfolioSections(html: string): PortfolioSections {
       const isPeriod = /^(?:[A-Za-z]+\s+)?\d{4}\s*[–—-]\s*(?:present|(?:[A-Za-z]+\s+)?\d{4})$/i.test(text);
       if (isPeriod && !currentJob.period) currentJob.period = text;
       else currentJob.highlights.push(text);
+    } else if (activeSection === "education" && currentEducation) {
+      const separator = text.lastIndexOf("|");
+      currentEducation.institution = (separator > 0 ? text.slice(0, separator) : text).trim();
+      if (separator > 0) currentEducation.period = text.slice(separator + 1).trim();
+    } else if (activeSection === "certifications") {
+      const separator = text.indexOf(":");
+      const provider = separator > 0 ? text.slice(0, separator).trim() : "Additional training";
+      const value = separator > 0 ? text.slice(separator + 1) : text;
+      const items = value.split(/;\s*/).map((item) => item.trim()).filter(Boolean);
+      if (items.length) certifications.push({ provider, items });
+    } else if (activeSection === "languages") {
+      const separator = text.indexOf(":");
+      if (separator > 0) {
+        languages.push({
+          language: text.slice(0, separator).trim(),
+          proficiency: text.slice(separator + 1).trim(),
+        });
+      }
     }
   });
 
-  return { summary, skillGroups, experience };
+  return { summary, skillGroups, experience, education, certifications, languages };
 }

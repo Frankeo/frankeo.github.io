@@ -84,6 +84,21 @@ button:focus-visible, a:focus-visible { outline: 3px solid #536f2e; outline-offs
 .timeline-highlights li { position: relative; padding-left: 14px; }
 .timeline-highlights li::before { position: absolute; left: 0; color: var(--coral); content: "↳"; }
 .timeline-highlights strong { margin-right: 4px; color: var(--ink); }
+.credentials-section { padding: 87px max(32px, calc((100% - 1280px) / 2)) 96px; background: var(--paper); }
+.credentials-heading { max-width: 1280px; margin: auto; }
+.credentials-heading .section-kicker span { color: #6e8c34; }
+.credentials-heading h2 { max-width: 700px; margin: 17px 0 39px; font: 500 43px/1.08 var(--font-display), sans-serif; }
+.credentials-grid { display: grid; grid-template-columns: 1.05fr 1.2fr .8fr; max-width: 1280px; margin: auto; border-top: 1px solid var(--line); }
+.credential-column { min-width: 0; padding: 19px 25px 0 0; }
+.credential-column + .credential-column { padding-left: 25px; border-left: 1px solid var(--line); }
+.credential-label { margin: 0 0 19px; color: var(--muted); font-size: 10px; font-weight: 700; text-transform: uppercase; }
+.education-item + .education-item, .certification-group + .certification-group, .language-item + .language-item { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+.education-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; }
+.education-heading h3, .certification-group h3, .language-item h3 { margin: 0; font: 600 15px/1.4 var(--font-display), sans-serif; }
+.education-heading time { flex: 0 0 auto; color: var(--muted); font-size: 10px; }
+.education-item > p, .language-item > p { margin: 6px 0 0; color: var(--muted); font-size: 12px; }
+.certification-group ul { display: grid; gap: 7px; margin: 8px 0 0; padding-left: 16px; color: var(--muted); font-size: 12px; }
+.language-item h3 { color: #526b31; }
 .projects-section { padding: 92px max(32px, calc((100% - 1280px) / 2)) 105px; background: var(--ink); color: #f5f4ed; }
 .section-heading { max-width: 1280px; margin: auto; }
 .section-kicker { color: #9eaaa2; }
@@ -179,6 +194,11 @@ button:focus-visible, a:focus-visible { outline: 3px solid #536f2e; outline-offs
   .timeline-title-row { flex-direction: column; gap: 6px; }
   .timeline-title-row h3 { font-size: 20px; }
   .timeline-title-row time { margin-top: 0; }
+  .credentials-section { padding: 64px 20px 72px; }
+  .credentials-heading h2 { margin: 15px 0 27px; font-size: 36px; }
+  .credentials-grid { grid-template-columns: 1fr; }
+  .credential-column, .credential-column + .credential-column { padding: 18px 0 22px; border-left: 0; }
+  .credential-column + .credential-column { border-top: 1px solid var(--line); }
   .projects-section { padding: 64px 20px 70px; }
   .section-title-row { display: block; margin: 13px 0 26px; }
   .section-title-row h2 { font-size: 43px; }
@@ -201,7 +221,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid #536f2e; outline-offs
 @media print {
   body { background: white; color: #111; font-size: 10pt; }
   .topbar, .hero, .projects-section, .resume-heading, .site-footer { display: none !important; }
-  .topbar, .hero, .about-section, .experience-section, .projects-section, .site-footer { display: none !important; }
+  .topbar, .hero, .about-section, .experience-section, .credentials-section, .projects-section, .site-footer { display: none !important; }
   .print-document { display: block; }
   .document { width: auto; margin: 0; font-size: 9pt; }
   .document h1 { font-size: 16pt; }

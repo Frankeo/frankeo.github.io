@@ -16,7 +16,7 @@ export default async function HomePage() {
     fetchGitHubOrganizationProjects(config.githubOrganization),
     fetchPublicGoogleDoc(config.googleDocUrl),
   ]);
-  const { summary, skillGroups, experience } = extractPortfolioSections(documentHtml);
+  const { summary, skillGroups, experience, education, certifications, languages } = extractPortfolioSections(documentHtml);
   const name = profile.name || profile.login;
   const linkedIn = config.linkedinUrl;
 
@@ -30,6 +30,7 @@ export default async function HomePage() {
           <a href="#projects">Projects</a>
           <a href="#about">About</a>
           <a href="#experience">Career</a>
+          <a href="#credentials">Credentials</a>
           <a className="social-shortcut" href={profile.html_url} target="_blank" rel="noreferrer">
             GitHub
           </a>
@@ -139,6 +140,47 @@ export default async function HomePage() {
               </li>
             ))}
           </ol>
+        </section>
+
+        <section className="credentials-section" id="credentials" aria-labelledby="credentials-title">
+          <div className="credentials-heading">
+            <p className="section-kicker"><span>03</span> Beyond the day-to-day</p>
+            <h2 id="credentials-title">Learning, recognition &amp; languages<span className="accent-period">.</span></h2>
+          </div>
+          <div className="credentials-grid">
+            <article className="credential-column">
+              <p className="credential-label">Education</p>
+              {education.map((item) => (
+                <div className="education-item" key={`${item.qualification}-${item.institution}`}>
+                  <div className="education-heading">
+                    <h3>{item.qualification}</h3>
+                    {item.period && <time>{item.period}</time>}
+                  </div>
+                  <p>{item.institution}</p>
+                </div>
+              ))}
+            </article>
+            <article className="credential-column">
+              <p className="credential-label">Certifications &amp; training</p>
+              {certifications.map((group) => (
+                <div className="certification-group" key={group.provider}>
+                  <h3>{group.provider}</h3>
+                  <ul>
+                    {group.items.map((item) => <li key={item}>{item}</li>)}
+                  </ul>
+                </div>
+              ))}
+            </article>
+            <article className="credential-column languages-column">
+              <p className="credential-label">Languages</p>
+              {languages.map((item) => (
+                <div className="language-item" key={item.language}>
+                  <h3>{item.language}</h3>
+                  <p>{item.proficiency}</p>
+                </div>
+              ))}
+            </article>
+          </div>
         </section>
 
         <GitHubProjects groups={[

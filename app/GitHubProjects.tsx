@@ -39,7 +39,7 @@ export default function GitHubProjects({ groups }: { groups: GitHubProjectGroup[
   return (
     <section className="projects-section" id="projects" aria-labelledby="projects-title">
       <div className="section-heading">
-        <p className="section-kicker"><span>03</span> Open source / <span className="live-label">GitHub live</span></p>
+        <p className="section-kicker"><span>04</span> Open source / <span className="live-label">GitHub live</span></p>
         <div className="section-title-row">
           <h2 id="projects-title">Selected work<span className="accent-period">.</span></h2>
           <p>Four public projects, ranked by current community stars.</p>

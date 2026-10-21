@@ -57,7 +57,13 @@ test("CV summary and technical skills are extracted by their document headings",
     <p>2015 – February 2016</p>
     <p>Technologies: .NET Framework, Oracle and PL/SQL.</p>
     <h1>EDUCATION</h1>
-    <p>This stays in the printable CV.</p>
+    <h2>Studies in Systems Engineering</h2>
+    <p>UTN – Facultad Regional Rosario | 2010 – 2015</p>
+    <h1>CERTIFICATIONS &amp; ADDITIONAL TRAINING</h1>
+    <p>AWS: Certified Cloud Practitioner.</p>
+    <p>IBM: Object-Oriented Systems Modeling; DB2 Database Design.</p>
+    <h1>LANGUAGES</h1>
+    <p>English: fluent, full professional proficiency.</p>
   `);
 
   assert.deepEqual(sections, {
@@ -77,6 +83,16 @@ test("CV summary and technical skills are extracted by their document headings",
       period: "2015 – February 2016",
       highlights: ["Technologies: .NET Framework, Oracle and PL/SQL."],
     }],
+    education: [{
+      qualification: "Studies in Systems Engineering",
+      institution: "UTN – Facultad Regional Rosario",
+      period: "2010 – 2015",
+    }],
+    certifications: [
+      { provider: "AWS", items: ["Certified Cloud Practitioner."] },
+      { provider: "IBM", items: ["Object-Oriented Systems Modeling", "DB2 Database Design."] },
+    ],
+    languages: [{ language: "English", proficiency: "fluent, full professional proficiency." }],
   });
 });
 

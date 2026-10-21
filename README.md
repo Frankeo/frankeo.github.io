@@ -1,6 +1,6 @@
 # Curriculum
 
-A personal portfolio built with Next.js and TypeScript. It turns the CV's professional summary and technical skills into an editorial About section, presents job history as a timeline, and highlights the four most-starred public repositories from both the personal account and company organization. GitHub and LinkedIn links are included. The CV is read-only here; edits happen in Google Docs. The PDF action prints the complete original CV.
+A personal portfolio built with Next.js and TypeScript. It turns the CV's professional summary and technical skills into an editorial About section, presents job history as a timeline, and highlights education, certifications, languages, and the four most-starred public repositories from both the personal account and company organization. GitHub and LinkedIn links are included. The CV is read-only here; edits happen in Google Docs. The PDF action prints the complete original CV.
 
 Everything in the configured Google Doc is published publicly. Keep private information out of that document.
 
@@ -16,7 +16,7 @@ yarn dev
 # Open http://localhost:3000
 ```
 
-The Google Doc URL, page title, GitHub username, company organization, and LinkedIn URL are in [`document-config.json`](document-config.json). Change those values there when needed. The document must be shared so anyone with its link can view it. Next.js downloads its public HTML export, sanitizes it, and extracts the summary, skills, and experience headings for the portfolio. The complete CV remains available to print as PDF. Personal and company repositories are embedded during the build, then fetched again without cache each time someone opens the page, so star changes can reorder both top-four lists without a redeployment. The page keeps the embedded rankings if GitHub is temporarily unavailable or rate-limits the request.
+The Google Doc URL, page title, GitHub username, company organization, and LinkedIn URL are in [`document-config.json`](document-config.json). Change those values there when needed. The document must be shared so anyone with its link can view it. Next.js downloads its public HTML export, sanitizes it, and extracts the summary, skills, experience, education, certifications, and languages headings for the portfolio. The complete CV remains available to print as PDF. Personal and company repositories are embedded during the build, then fetched again without cache each time someone opens the page, so star changes can reorder both top-four lists without a redeployment. The page keeps the embedded rankings if GitHub is temporarily unavailable or rate-limits the request.
 
 ## Publish updates
 
