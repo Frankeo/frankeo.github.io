@@ -24,18 +24,18 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4.2.2
-      - name: Validate JavaScript and CV behavior
-        run: |
-          npm run check
-          npm test
+      - uses: actions/setup-node@v4.2.0
+        with:
+          node-version: 22
+          cache: yarn
+      - name: Install dependencies
+        run: corepack yarn install --frozen-lockfile
+      - name: Validate and build static site
+        run: corepack yarn typecheck && corepack yarn test && corepack yarn build
       - uses: actions/configure-pages@v5.0.0
-      - name: Stage public site only
-        run: |
-          mkdir _site
-          cp index.html styles.css app.js cv.js drive.js cv.json _site/
       - uses: actions/upload-pages-artifact@v3.0.1
         with:
-          path: _site
+          path: out
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4.0.5
