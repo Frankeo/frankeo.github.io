@@ -15,7 +15,7 @@ export interface GitHubProjectGroup {
   initialProjects: GitHubRepository[];
 }
 
-function ProjectArtwork({ project }: { project: GitHubRepository }) {
+function ProjectArtwork({ project, language }: { project: GitHubRepository; language: "en" | "es" }) {
   if (project.imageUrl) {
     return (
       <div className="project-art project-art-image">
@@ -32,7 +32,7 @@ function ProjectArtwork({ project }: { project: GitHubRepository }) {
 
   return (
     <div className="project-art project-art-fallback">
-      <span>{project.language || "Open source"}</span>
+      <span>{project.language || (language === "es" ? "Código abierto" : "Open source")}</span>
       <strong>{project.name}</strong>
       <Code2 size={38} strokeWidth={1.2} aria-hidden="true" />
     </div>
@@ -41,12 +41,15 @@ function ProjectArtwork({ project }: { project: GitHubRepository }) {
 
 export default function GitHubProjects({
   groups,
+  language,
 }: {
   groups: GitHubProjectGroup[];
+  language: "en" | "es";
 }) {
   const [projectsByGroup, setProjectsByGroup] = useState<Record<string, GitHubRepository[]>>(
     Object.fromEntries(groups.map((group) => [group.key, group.initialProjects])),
   );
+  const refreshKey = groups.map(({ key, owner, accountType }) => `${key}:${owner}:${accountType}`).join("|");
 
   useEffect(() => {
     let active = true;
@@ -63,15 +66,15 @@ export default function GitHubProjects({
     return () => {
       active = false;
     };
-  }, [groups]);
+  }, [refreshKey]);
 
   return (
     <section className="projects-section" id="projects" aria-labelledby="projects-title">
       <div className="section-heading">
-        <p className="section-kicker"><span>05</span> Open source / <span className="live-label">GitHub live</span></p>
+        <p className="section-kicker"><span>05</span> {language === "es" ? "Código abierto" : "Open source"} / <span className="live-label">GitHub {language === "es" ? "en directo" : "live"}</span></p>
         <div className="section-title-row">
-          <h2 id="projects-title">Selected work<span className="accent-period">.</span></h2>
-          <p>Four public projects, ranked by current community stars.</p>
+          <h2 id="projects-title">{language === "es" ? "Proyectos destacados" : "Selected work"}<span className="accent-period">.</span></h2>
+          <p>{language === "es" ? "Cuatro proyectos públicos ordenados por estrellas de la comunidad." : "Four public projects, ranked by current community stars."}</p>
         </div>
       </div>
       <div className="project-groups">
@@ -83,29 +86,29 @@ export default function GitHubProjects({
                 <h3>{group.title}</h3>
               </div>
               <a href={group.profileUrl} target="_blank" rel="noreferrer">
-                View GitHub <ArrowUpRight size={15} aria-hidden="true" />
+                {language === "es" ? "Ver GitHub" : "View GitHub"} <ArrowUpRight size={15} aria-hidden="true" />
               </a>
             </div>
             <div className="project-grid" aria-live="polite">
               {(projectsByGroup[group.key] || []).map((project, index) => (
                 <article className="project-item" key={project.name}>
-                  <ProjectArtwork project={project} />
+                  <ProjectArtwork project={project} language={language} />
                   <div className="project-topline">
                     <span className="project-number">0{index + 1} / 04</span>
-                    <span className="project-language"><Code2 size={15} aria-hidden="true" /> {project.language || "Open source"}</span>
+                    <span className="project-language"><Code2 size={15} aria-hidden="true" /> {project.language || (language === "es" ? "Código abierto" : "Open source")}</span>
                   </div>
                   <h3>{project.name}</h3>
-                  <p className="project-description">{project.description || "An open-source project."}</p>
+                  <p className="project-description">{project.description || (language === "es" ? "Un proyecto de código abierto." : "An open-source project.")}</p>
                   <div className="project-footer">
                     <span className="project-stars"><Star size={15} aria-hidden="true" /> {project.stargazers_count}</span>
                     <div className="project-links">
                       {project.homepage && (
                         <a href={project.homepage} target="_blank" rel="noreferrer">
-                          Live site <ArrowUpRight size={15} aria-hidden="true" />
+                          {language === "es" ? "Sitio web" : "Live site"} <ArrowUpRight size={15} aria-hidden="true" />
                         </a>
                       )}
                       <a href={project.html_url} target="_blank" rel="noreferrer">
-                        Source <Code2 size={15} aria-hidden="true" />
+                        {language === "es" ? "Código" : "Source"} <Code2 size={15} aria-hidden="true" />
                       </a>
                     </div>
                   </div>
