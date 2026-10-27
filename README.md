@@ -16,6 +16,14 @@ yarn dev
 # Open http://localhost:3000
 ```
 
+## Codespaces and VS Code
+
+New GitHub Codespaces use [the dev container configuration](.devcontainer/devcontainer.json), which provides Node.js 22 and installs dependencies with Yarn 1.22.22. To use the blue VS Code accents, open the [workspace file](.devcontainer/dotfiles.code-workspace); its folder points to the repository root. Run `yarn dev` to start the app.
+
+Container creation also clones [Frankeo/dotfiles](https://github.com/Frankeo/dotfiles) into `~/dotfiles` if it is not already present and runs `installations/devcontainer.sh` as the `node` user. This installs Oh My Zsh, Powerlevel10k, syntax highlighting, and autosuggestions, and links the shell configuration. An existing clone is reused without automatically pulling updates. New integrated terminals use Zsh.
+
+The terminal font is set to **MesloLGS NF**. For desktop VS Code, install that font on your local machine; installing it only inside the container will not render the prompt icons locally. Browser-based Codespaces also needs a font available to the browser. After rebuilding, close any old terminals and open a new one.
+
 The Google Doc URL, page title, GitHub username, company organization, and LinkedIn URL are in [`document-config.json`](document-config.json). Change those values there when needed. The document must be shared so anyone with its link can view it. Next.js downloads its public HTML export, sanitizes it, and extracts the summary, skills, experience, education, certifications, and languages headings for the portfolio. The complete CV remains available to print as PDF. Personal and company repositories are embedded during the build, then fetched again without cache each time someone opens the page, so star changes can reorder both top-four lists without a redeployment. Each selected repo's thumbnail is discovered from its README or image assets at build and refresh time; repos without a usable image get a generated text-and-language visual. No per-repository image map needs maintenance. The page keeps embedded rankings if GitHub is temporarily unavailable or rate-limits the request.
 
 ## Publish updates

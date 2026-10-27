@@ -1,0 +1,26 @@
+{
+  "name": "Frankeo Portfolio",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+  "remoteUser": "node",
+  "postCreateCommand": "if [ ! -d \"$HOME/dotfiles\" ]; then git clone --depth 1 https://github.com/Frankeo/dotfiles.git \"$HOME/dotfiles\"; fi && bash \"$HOME/dotfiles/installations/devcontainer.sh\" && corepack yarn@1.22.22 install --frozen-lockfile",
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Next.js",
+      "onAutoForward": "notify"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/bin/zsh"
+          }
+        },
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.fontFamily": "MesloLGS NF"
+      }
+    }
+  }
+}
